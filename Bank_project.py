@@ -1,9 +1,10 @@
 import mysql.connector
 from datetime import date
+#--------------------------------------------------------------------------------
 def clear():
     for _ in range(65):
         print()
-
+#--------------------------------------------------------------------------------
 def account_status(acno):
     connection = mysql.connector.connect(host='localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -12,7 +13,7 @@ def account_status(acno):
     result = cursor.fetchone()
     connection.close()
     return result
-
+#--------------------------------------------------------------------------------
 def deposit():
     connection = mysql.connector.connect(host='localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -31,7 +32,7 @@ def deposit():
         print("Suspend account")
     wait = input("Enter any key to press for continue")
     connection.close()
-
+#--------------------------------------------------------------------------------
 def withdraw():
     connection = mysql.connector.connect(host='localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -50,7 +51,7 @@ def withdraw():
         print("Suspend account")
     wait = input("Enter any key to press for continue")
     connection.close()
-    
+#--------------------------------------------------------------------------------    
 def transaction_menu():
     while True:
         clear()
@@ -66,52 +67,53 @@ def transaction_menu():
             withdraw()
         if choice == 3:
             main_menu()
+#--------------------------------------------------------------------------------
 def search_menu():
-    connection = mysql.connector.connect(host = ' localhost', database='bank_project', user='root', password='ramu1234')
+    connection = mysql.connector.connect(host='localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
     while True:
         clear()
         print("Search menu")
-        print('1.Account number')
-        print("2.Aadhar card")
-        print('3.phone number')
-        print("4.Email")
-        print('5.Name')
+        print('1. Account number')
+        print("2. Aadhar card")
+        print('3. Phone number')
+        print("4. Email")
+        print('5. Name')
         print("6. Back to main menu")
         print("\n\n\n")
-        choice = int(input('Enter your choice:'))
-        field = ''
+        choice = int(input('Enter your choice: '))
+        field_name = ''
         if choice == 1:
-            field = 'acno'
+            field_name = 'acno'
         if choice == 2:
-            field = 'aadhar_no'
+            field_name = 'aadhar_no'  # Corrected variable name
         if choice == 3:
-            field = 'phone'
+            field_name = 'phone'
         if choice == 4:
-            field = 'email'
+            field_name = 'email'
         if choice == 5:
-            field = 'name'
+            field_name = 'name'
         if choice == 6:
-            break
-        msg ='Enter'+field+': '
+            main_menu()
+        msg = 'Enter ' + field_name + ': '
         value = input(msg)
-        if field == 'acno' :
-            sql = 'select * from customer where' + field + ' = ' + value +';'
+        if field_name == 'acno':
+            sql = 'select * from customer where ' + field_name + ' = ' + value + ';'
         else:
-            sql = 'select * from customer where' + field + ' like % ' + value +'%";'
+            sql = 'select * from customer where ' + field_name + ' like "%' + value + '%";'  # Corrected SQL query
         cursor.execute(sql)
         records = cursor.fetchall()
         n = len(records)
         clear()
-        print( 'Search Result for', field,' ',value)
-        print('-'*80)
+        print('Search Result for', field_name, ' ', value)
+        print('-' * 80)
         for record in records:
-            print(record[0],record[1], record[2], record[3],record[4], record[5], record[6], record[7], record[8])
-        if(n<= 0):
-            print(field,' ', value,'does not exist')
+            print(record[0], record[1], record[2], record[3], record[4], record[5], record[6], record[7], record[8])
+        if n <= 0:
+            print(field_name, ' ', value, ' does not exist')  # Corrected message
         wait = input('\n\n\n Press any key to continue. ')
-    wait = input("Enter any key to press for continue")
-    connection.close()
+
+#--------------------------------------------------------------------------------
 def account_details():
     clear()
     acno = input("Enter the account Number: ")
@@ -140,6 +142,7 @@ def account_details():
         print(result[0],result[1],result[2],result[3])
     connection.close()
     wait = input('\n\n\n Press any key to continue. ')
+#--------------------------------------------------------------------------------
 def add_account():
     connection = mysql.connector.connect(host = ' localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -155,6 +158,7 @@ def add_account():
     cursor.execute(sql)
     print("New Custmer Account Created Succesfully")
     wait = input('\n\n\n Press any key to continue. ')
+#--------------------------------------------------------------------------------
 def modify_account():
     connection = mysql.connector.connect(host = 'localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -181,6 +185,7 @@ def modify_account():
     cursor.execute(sql)
     print("Customer Info modified Succesfully")
     wait = input('\n\n\n Press any key to continue. ')
+#--------------------------------------------------------------------------------
 def close_account():
     connection = mysql.connector.connect(host = 'localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -190,6 +195,7 @@ def close_account():
     cursor.execute(sql)
     print("Account Closed Succesfully")
     wait = input('\n\n\n Press any key to continue. ')
+#--------------------------------------------------------------------------------
 def activate_account():
     connection = mysql.connector.connect(host = 'localhost', database='bank_project', user='root', password='ramu1234')
     cursor = connection.cursor()
@@ -199,6 +205,7 @@ def activate_account():
     cursor.execute(sql)
     print("Account Activated Succesfully")
     wait = input('\n\n\n Press any key to continue. ')
+#--------------------------------------------------------------------------------
 def main_menu():
     clear()
     print("Main Menu")
@@ -225,5 +232,6 @@ def main_menu():
         search_menu()
     if choice == 7:
         return
+#--------------------------------------------------------------------------------
 if __name__ == '__main__':
     main_menu()
